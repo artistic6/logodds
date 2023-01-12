@@ -73,14 +73,6 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $qin = array_slice($setsValues, 0, 3);
     sort($qin);
 
-    if(!empty($places)){
-        $sureWin = array_diff($qin, $places);
-        if(count($sureWin) === 1){
-            $racetext .= "\t\t'Sure W/P' =>  '" . implode(", ", $sureWin) . "',\n";
-            $racetext .= "\t\t'Qin' =>  '" . implode(", ", $qin) . "',\n";
-        }
-    }
-
     if(count($selected) == 4){
         if(empty($places)){
             $racetext .= "\t\t'Win/Qin' =>  '" . implode(", ", $selected) . "',\n";
