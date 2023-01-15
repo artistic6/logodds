@@ -10,6 +10,11 @@ if(!isset($argv[1])) die("Race Date Not Entered!!\n");
 
 $raceDate = trim($argv[1]);
 $currentDir = __DIR__ . DIRECTORY_SEPARATOR . $raceDate;
+$outFile = $currentDir . DIRECTORY_SEPARATOR . $raceDate . ".php";
+
+if(file_exists($outFile)) {
+    $previousBets = include($outFile);
+}
 
 $allOdds = include($currentDir . DIRECTORY_SEPARATOR . "odds.php");
 $SETS = include($currentDir . DIRECTORY_SEPARATOR . "sets.php");
@@ -43,9 +48,6 @@ for($r=1; $r <= $totalRaces; $r++){
     $probas[$r] = $proba;
 }
 
-$outFile = $currentDir . DIRECTORY_SEPARATOR . $raceDate . "-QIN.php";
-
-
 $outtext = "<?php\n\n";
 $outtext .= "return [\n";
 
@@ -61,38 +63,81 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $sets = $SETS[$raceNumber];
     $selected = array_values(array_unique($SELECTED[$raceNumber]));
     $places = [];
+    $newPla = [];
+    $winners = [];
+    $newWin = [];
+    $qinners = [];
+    $newQQP = [];
+    $triers = [];
+    $newTrio = [];
+
+    if(isset($previousBets[$raceNumber]['PLA'])){
+        $previous = $previousBets[$raceNumber]['PLA'];
+        $newPla = explode(", ", $previous);
+    }
+
+    if(isset($previousBets[$raceNumber]['Win'])){
+        $previous = $previousBets[$raceNumber]['Win'];
+        $newWin = explode(", ", $previous);
+    }
+
+    if(isset($previousBets[$raceNumber]['QQP'])){
+        $previous = $previousBets[$raceNumber]['QQP'];
+        $newQQP = explode(", ", $previous);
+    }
+
+    if(isset($previousBets[$raceNumber]['Trio-F4'])){
+        $previous = $previousBets[$raceNumber]['Trio-F4'];
+        $newTrio = explode(", ", $previous);
+    }
 
     foreach($sets as $setK){
         if(count($setK) == 2){
-            $racetext .= "\t\t'PLA' =>  '" . implode(", ", $setK) . "',\n";
             $places = array_merge($places, $setK);
         }
     }
-
-    $setsValues = array_values(array_unique(array_merge($sets['Set A'], $sets['Set B'], $sets['Set C'])));
-    $qin = array_slice($setsValues, 0, 3);
-    sort($qin);
+    foreach($places as $place){
+        if(!in_array($place, $newPla)) $newPla[] = $place;
+    }
+    if(!empty($newPla)){
+        $racetext .= "\t\t'PLA' =>  '" . implode(", ", $newPla) . "',\n";
+    }
 
     if(count($selected) == 4){
-        if(empty($places)){
-            $racetext .= "\t\t'Win/Qin' =>  '" . implode(", ", $selected) . "',\n";
-        }
-        else{
-            $racetext .= "\t\t'Win' =>  '" . implode(", ", $selected) . "',\n";
-            $tmpValues = array_unique(array_values(array_merge($places, $selected)));
-            if(count($tmpValues) === 5){
-                sort($tmpValues);
-                $racetext .= "\t\t'Qin/Trio/F4' =>  '" . implode(", ", $tmpValues) . "',\n";
-            }
-        }
+        $winners = $selected;
+    }
+    foreach($winners as $winner){
+        if(!in_array($winner, $newWin)) $newWin[] = $winner;
+    }
+    if(!empty($newWin)){
+        $racetext .= "\t\t'Win' =>  '" . implode(", ", $newWin) . "',\n";
     }
 
+    $qinners = array_slice($sets['Set A'], 0, 4);
+    foreach($qinners as $qinner){
+        if(!in_array($qinner, $newQQP)) $newQQP[] = $qinner;
+    }
+    if(!empty($newQQP)){
+        $racetext .= "\t\t'QQP' =>  '" . implode(", ", $newQQP) . "',\n";
+    }
+
+    if((count($selected) == 4) && !empty($places)){
+        $tmpValues = array_unique(array_values(array_merge($places, $selected)));
+        if(count($tmpValues) === 5){
+            sort($tmpValues);
+            $triers = $tmpValues;
+        }
+    }
+    foreach($triers as $trier){
+        if(!in_array($trier, $newTrio)) $newTrio[] = $trier;
+    }
+    if(!empty($newTrio)){
+        $racetext .= "\t\t'Trio-F4' =>  '" . implode(", ", $newTrio) . "',\n";
+    }
+    
     $racetext .= "\t],\n";
 
-    $showRace = !empty($places) || (count($selected) === 4);
-    if($showRace) {
-        $outtext .= $racetext;
-    }
+    $outtext .= $racetext;
 }
 
 $outtext .= "];\n";
