@@ -134,6 +134,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     foreach($triers as $trier){
         if(!in_array($trier, $newTrio)) $newTrio[] = $trier;
     }
+    sort($newTrio);
     if(!empty($newTrio)){
         $racetext .= "\t\t'Trio-F4' =>  '" . implode(", ", $newTrio) . "',\n";
     }
