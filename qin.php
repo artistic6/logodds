@@ -99,6 +99,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     foreach($places as $place){
         if(!in_array($place, $newPla)) $newPla[] = $place;
     }
+    sort($newPla);
     if(!empty($newPla)){
         $racetext .= "\t\t'PLA' =>  '" . implode(", ", $newPla) . "',\n";
     }
@@ -109,6 +110,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     foreach($winners as $winner){
         if(!in_array($winner, $newWin)) $newWin[] = $winner;
     }
+    sort($newWin);
     if(!empty($newWin)){
         $racetext .= "\t\t'Win' =>  '" . implode(", ", $newWin) . "',\n";
     }
@@ -117,6 +119,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     foreach($qinners as $qinner){
         if(!in_array($qinner, $newQQP)) $newQQP[] = $qinner;
     }
+    sort($newQQP);
     if(!empty($newQQP)){
         $racetext .= "\t\t'QQP' =>  '" . implode(", ", $newQQP) . "',\n";
     }
