@@ -138,6 +138,9 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     if(!empty($newTrio)){
         $racetext .= "\t\t'Trio-F4' =>  '" . implode(", ", $newTrio) . "',\n";
     }
+
+    $Iwin = array_intersect($newPla, $newWin, $newQQP);
+    $racetext .= "\t\t'I-win' =>  '" . implode(", ", $Iwin) . "',\n";
     
     $racetext .= "\t],\n";
 
