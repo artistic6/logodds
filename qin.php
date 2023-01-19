@@ -140,7 +140,10 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     }
 
     $Iwin = array_intersect($newPla, $newWin, $newQQP);
-    $racetext .= "\t\t'I-win' =>  '" . implode(", ", $Iwin) . "',\n";
+    if(count($Iwin) >= 2){
+        $racetext .= "\t\t'I-win' =>  '" . implode(", ", $Iwin) . "',\n";
+    
+    }
     
     $racetext .= "\t],\n";
 
