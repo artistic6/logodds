@@ -99,7 +99,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     foreach($places as $place){
         if(!in_array($place, $newPla)) $newPla[] = $place;
     }
-    sort($newPla);
+    
     if(!empty($newPla)){
         $racetext .= "\t\t'PLA' =>  '" . implode(", ", $newPla) . "',\n";
     }
@@ -110,7 +110,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     foreach($winners as $winner){
         if(!in_array($winner, $newWin)) $newWin[] = $winner;
     }
-    sort($newWin);
+    
     if(!empty($newWin)){
         $racetext .= "\t\t'Win' =>  '" . implode(", ", $newWin) . "',\n";
     }
@@ -119,7 +119,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     foreach($qinners as $qinner){
         if(!in_array($qinner, $newQQP)) $newQQP[] = $qinner;
     }
-    sort($newQQP);
+    
     if(!empty($newQQP)){
         $racetext .= "\t\t'QQP' =>  '" . implode(", ", $newQQP) . "',\n";
     }
@@ -127,14 +127,13 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     if((count($selected) == 4) && !empty($places)){
         $tmpValues = array_unique(array_values(array_merge($places, $selected)));
         if(count($tmpValues) === 5){
-            sort($tmpValues);
             $triers = $tmpValues;
         }
     }
     foreach($triers as $trier){
         if(!in_array($trier, $newTrio)) $newTrio[] = $trier;
     }
-    sort($newTrio);
+    
     if(!empty($newTrio)){
         $racetext .= "\t\t'Trio-F4' =>  '" . implode(", ", $newTrio) . "',\n";
     }
