@@ -37,13 +37,10 @@ for($r = 1; $r <= $totalRaces; $r++){
 
     $oddsJSON = file_get_contents("https://bet.hkjc.com/racing/getJSON.aspx?type=winplaodds&date=$raceDateFormat&venue=$venue&start=$r&end=$r");
 
-    try {
-        $odds = json_decode($oddsJSON, true);
-        $odds = $odds["OUT"];
-    }
-    catch (\Exception $e) {
-        exit('{"result":"FALSE","message":"Caught exception: ' . $e->getMessage() . '"}');
-    }
+    $odds = json_decode($oddsJSON, true);
+    if($odds == NULL) exit("ERROR!!!\n");
+    
+    $odds = $odds["OUT"];
    
     $pos = strpos($odds, "#PLA");
     $winOdds = substr($odds, 0, $pos);
