@@ -126,11 +126,6 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
         $racetext .= "\t\t'Trio-F4' =>  '" . implode(", ", $newTrio) . "',\n";
     }
 
-    $Iwin = array_intersect($newPla, $newWin, $newQQP);
-    if(count($Iwin) >= 2){
-        $racetext .= "\t\t'I-win' =>  '" . implode(", ", $Iwin) . "',\n";
-    }
-
     $I1 = array_intersect($newPla, $newWin);
     if(count($I1) >= 1){
         $racetext .= "\t\t'I-1' =>  '" . implode(", ", $I1) . "',\n";
@@ -140,7 +135,13 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
         if(count($I2) >= 1){
             $racetext .= "\t\t'I-2' =>  '" . implode(", ", $I2) . "',\n";
         }
-    }  
+    } 
+    
+    $Iwin = array_intersect($newPla, $newWin, $newQQP);
+    if(count($Iwin) >= 2){
+        $racetext .= "\t\t'I-win' =>  '" . implode(", ", $Iwin) . "',\n";
+    }
+    
     $racetext .= "\t],\n";
 
     $outtext .= $racetext;
