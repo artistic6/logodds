@@ -141,12 +141,19 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $Iwin = array_intersect($newPla, $newWin, $newQQP);
     if(count($Iwin) >= 2){
         $racetext .= "\t\t'I-win' =>  '" . implode(", ", $Iwin) . "',\n";
-    
     }
-     $I2 = array_intersect($newWin, $newQQP);
-    if(count($I2) >= 2){
+
+    $I1 = array_intersect($newPla, $newWin);
+    if(count($I1) >= 1){
+        $racetext .= "\t\t'I-1' =>  '" . implode(", ", $I1) . "',\n";
+    }
+    $I2 = array_intersect($newPla, $newQQP);
+    if(count($I2) >= 1){
         $racetext .= "\t\t'I-2' =>  '" . implode(", ", $I2) . "',\n";
-    
+    }
+    $I3 = array_intersect($newWin, $newQQP);
+    if(count($I3) >= 1){
+        $racetext .= "\t\t'I-3' =>  '" . implode(", ", $I3) . "',\n";
     }
     
     $racetext .= "\t],\n";
