@@ -132,7 +132,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     }
     else{
         $I2 = array_intersect($newPla, $newQQP);
-        if(count($I2) >= 1){
+        if(count($I2) == 1){
             $racetext .= "\t\t'I-2' =>  '" . implode(", ", $I2) . "',\n";
         }
     } 
