@@ -4,7 +4,7 @@ if(!isset($argv[1])) die("Race Date Not Entered!!\n");
 
 $raceDate = trim($argv[1]);
 $currentDir = __DIR__ . DIRECTORY_SEPARATOR . $raceDate;
-$outFile = $currentDir . DIRECTORY_SEPARATOR . $raceDate . "Q.php";
+$outFile = $currentDir . DIRECTORY_SEPARATOR . $raceDate . "Q2.php";
 
 if(file_exists($outFile)) {
     $previousBets = include($outFile);
