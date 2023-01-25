@@ -141,6 +141,10 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     if(count($Iwin) >= 2){
         $racetext .= "\t\t'I-win' =>  '" . implode(", ", $Iwin) . "',\n";
     }
+
+  if(count($newPla) === 2){
+    $racetext .= "\t\t'Win/Qin' =>  '" . implode(", ", $newPla) . "',\n";
+  }
     
     $racetext .= "\t],\n";
 
