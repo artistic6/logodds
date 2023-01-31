@@ -56,6 +56,10 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $newWin = [];
     $qinners = [];
     $newQQP = [];
+    $setBers = [];
+    $newSetB = [];
+    $setCers = [];
+    $newSetC = [];
     $triers = [];
     $newTrio = [];
 
@@ -72,6 +76,16 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     if(isset($previousBets[$raceNumber]['QQP'])){
         $previous = $previousBets[$raceNumber]['QQP'];
         $newQQP = explode(", ", $previous);
+    }
+
+    if(isset($previousBets[$raceNumber]['Set B'])){
+        $previous = $previousBets[$raceNumber]['Set B'];
+        $newSetB = explode(", ", $previous);
+    }
+
+    if(isset($previousBets[$raceNumber]['Set C'])){
+        $previous = $previousBets[$raceNumber]['Set C'];
+        $newSetC = explode(", ", $previous);
     }
 
     if(isset($previousBets[$raceNumber]['Trio-F4'])){
@@ -103,13 +117,28 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
         $racetext .= "\t\t'Win' =>  '" . implode(", ", $newWin) . "',\n";
     }
 
-    $qinners = array_slice($sets['Set A'], 0, 4);
+    $qinners = $sets['Set A'];
     foreach($qinners as $qinner){
         if(!in_array($qinner, $newQQP)) $newQQP[] = $qinner;
     }
-    
     if(!empty($newQQP)){
         $racetext .= "\t\t'QQP' =>  '" . implode(", ", $newQQP) . "',\n";
+    }
+
+    $setBers = $sets['Set B'];
+    foreach($setBers as $setBer){
+        if(!in_array($setBer, $newSetB)) $newSetB[] = $setBer;
+    }
+    if(!empty($newSetB)){
+        $racetext .= "\t\t'Set B' =>  '" . implode(", ", $newSetB) . "',\n";
+    }
+
+    $setCers = $sets['Set C'];
+    foreach($setCers as $setCer){
+        if(!in_array($setCer, $newSetC)) $newSetC[] = $setCer;
+    }
+    if(!empty($newSetC)){
+        $racetext .= "\t\t'Set C' =>  '" . implode(", ", $newSetC) . "',\n";
     }
 
     if((count($selected) == 4) && !empty($places)){
