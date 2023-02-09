@@ -106,7 +106,7 @@ for($r=1; $r <= $totalRaces; $r++){
     $placeProbas[$r] = $plaProba;
 }
 
-$outFile = $currentDir . DIRECTORY_SEPARATOR . $raceDate . "-QPL.php";
+$outFile = $currentDir . DIRECTORY_SEPARATOR . $raceDate . ".php";
 
 $outtext = "return [\n";
 
@@ -161,7 +161,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     foreach($mostCommonWinners as $mostCommonWinnerNumber){
         if(in_array($mostCommonWinnerNumber, $selectedValues)){
             if(count($selectedValues) == 3) {
-                $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'QPL' => [" . implode(", ", $selectedValues) . "]\n";
+                $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Win' => [" . implode(", ", $selectedValues) . "]\n";
                 $outtext .= "\t],\n";
             }
             elseif(count($selectedValues) == 4 && $selected[$raceNumber][0] == $mostCommonWinnerNumber){
