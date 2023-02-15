@@ -158,22 +158,8 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     if(!isset($winProbas[$raceNumber])) continue;
     if( count($winProbas[$raceNumber]) < 12 ) continue;
     $selectedValues = array_unique(array_values($selected[$raceNumber])); 
-    foreach($mostCommonWinners as $mostCommonWinnerNumber){
-        if(in_array($mostCommonWinnerNumber, $selectedValues)){
-            if(count($selectedValues) == 3) {
-                $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Win' => [" . implode(", ", $selectedValues) . "]\n";
-                $outtext .= "\t],\n";
-            }
-            elseif(count($selectedValues) == 4 && $selected[$raceNumber][0] == $mostCommonWinnerNumber){
-                $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Win, Qin' => [" . implode(", ", $selectedValues) . "]\n";
-                $outtext .= "\t],\n";
-            }
-        }
-    }
-    $winArray = $winProbas[$raceNumber];
-    $plaArray = $placeProbas[$raceNumber];
-
-    
+    $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Win' => [" . implode(", ", $selectedValues) . "]\n";
+    $outtext .= "\t],\n";
 }
 
 $outtext .= "];\n\n";
