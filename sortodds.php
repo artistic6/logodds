@@ -1,20 +1,5 @@
 <?php
 
-function highestOccurence($myArray, $second = false){
-    $occurences = [];
-    foreach($myArray as $myValue){
-        if(!isset($occurences[$myValue])) $occurences[$myValue] = 1;
-        else $occurences[$myValue] += 1;
-    }
-    arsort($occurences);
-    $targetKeys = array_keys($occurences);
-    if( $occurences[$targetKeys[0]] >= 2 ) {
-        if(!$second) return [ $targetKeys[0], $occurences[$targetKeys[0]]] ;
-        else return [ $targetKeys[1], $occurences[$targetKeys[1]]] ;
-    }
-    else return [0,0];
-}
-
 function numericalValue($n){
     $tens = intdiv($n, 10);
     $units = $n - 10 * $tens;
@@ -116,12 +101,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
 
     $selected[$raceNumber] = [];
 
-    $winArray = $winProbas[$raceNumber];
     $plaArray = $placeProbas[$raceNumber];
-
-    $win = determinePlace($winArray, $blacks, $reds);
-    $winners[] = $win;
-    $selected[$raceNumber][] = $win;
 
     $Place = determinePlace($plaArray, $blacks, $reds);
     $selected[$raceNumber][] = $Place;
@@ -136,29 +116,13 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     
 }
 
-$mostCommonWinnerInfo = highestOccurence($winners);
-$mostCommonWinner = $mostCommonWinnerInfo[0];
-$mostCommonWinnerTimes = $mostCommonWinnerInfo[1];
-$secondMostCommonWinnerInfo = highestOccurence($winners, true);
-$secondMostCommonWinner = $secondMostCommonWinnerInfo[0];
-$secondMostCommonWinnerTimes = $secondMostCommonWinnerInfo[1];
-
-$mostCommonWinners = [ $mostCommonWinner ];
-if($secondMostCommonWinnerTimes == $mostCommonWinnerTimes) $mostCommonWinners[] = $secondMostCommonWinner;
 $outtext = "<?php\n\n";
-
-$outtext .= "/**\tMost Common Occurence */\t\n";
-$outtext .= "/**\tNumber " . $mostCommonWinner . " shows " . $mostCommonWinnerTimes . " Times */\n";
-$outtext .= "/**\tSecond Most Common Occurence */\t\n";
-$outtext .= "/**\tNumber " . $secondMostCommonWinner . " shows " . $secondMostCommonWinnerTimes . " Times */\n\n";
-
 $outtext .= "return [\n";
 
 for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     if(!isset($winProbas[$raceNumber])) continue;
     if( count($winProbas[$raceNumber]) < 12 ) continue;
-    $selectedValues = array_unique(array_values($selected[$raceNumber])); 
-    $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Win' => [" . implode(", ", $selectedValues) . "]\n";
+    $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Place' => [" . implode(", ", $selected[$raceNumber]) . "]\n";
     $outtext .= "\t],\n";
 }
 
