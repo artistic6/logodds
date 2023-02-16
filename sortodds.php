@@ -50,7 +50,11 @@ $raceDate = trim($argv[1]);
 $currentDir = __DIR__ . DIRECTORY_SEPARATOR . $raceDate;
 
 $allOdds = include($currentDir . DIRECTORY_SEPARATOR . "odds.php");
-$winProbas = [];
+$outFile = $currentDir . DIRECTORY_SEPARATOR . $raceDate . ".php";
+if(file_exists($outFile)){
+    $oldOdds = include($outFile);
+}
+
 $placeProbas = [];
 
 $winners = [];
@@ -67,62 +71,49 @@ $totalRaces = count($allOdds);
 for($r=1; $r <= $totalRaces; $r++){
     if(!isset($allOdds[$r])) continue;
     $tmpOdds = $allOdds[$r];
-    $winProba = [];
     $plaProba = [];
-    $winSum = 0;
     $plaSum = 0;
     foreach($tmpOdds as $i => $oddsTmp){
-            $oddsW = $oddsTmp['WIN'];
             $oddsP = $oddsTmp['PLA'];
-            $winProba[$i] = 100 * (log($oddsW) / $oddsW) / exp(1);
-            $winSum += $winProba[$i];
             $plaProba[$i] = 100 / $oddsP;
             $plaSum += $plaProba[$i];
         }
     foreach($tmpOdds as  $i => $oddsTmp){
-        $oddsW = $oddsTmp['WIN'];
         $oddsP = $oddsTmp['PLA'];
-        $winProba[$i] = round( $winProba[$i] * 100 / $winSum, 2);
         $plaProba[$i] = round( $plaProba[$i] * 100 / $plaSum, 2);
     }
-    arsort($winProba);
-    $winProbas[$r] = $winProba;
     arsort($plaProba);
     $placeProbas[$r] = $plaProba;
 }
 
-$outFile = $currentDir . DIRECTORY_SEPARATOR . $raceDate . ".php";
-
 $outtext = "return [\n";
 
 for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
-    if(!isset($winProbas[$raceNumber])) continue;
-    if( count($winProbas[$raceNumber]) < 12 ) continue;
-
-    $selected[$raceNumber] = [];
+    if(!isset($placeProbas[$raceNumber])) continue;
+    if( count($placeProbas[$raceNumber]) < 12 ) continue;
 
     $plaArray = $placeProbas[$raceNumber];
 
     $Place = determinePlace($plaArray, $blacks, $reds);
-    $selected[$raceNumber][] = $Place;
-
-    unset($plaArray[$Place]);
-    $Place = determinePlace($plaArray, $blacks, $reds);
-    $selected[$raceNumber][] = $Place;
-
-    unset($plaArray[$Place]);
-    $Place = determinePlace($plaArray, $blacks, $reds);
-    $selected[$raceNumber][] = $Place;  
-    
+    $selected[$raceNumber] = $Place;
+   
 }
 
 $outtext = "<?php\n\n";
 $outtext .= "return [\n";
 
 for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
-    if(!isset($winProbas[$raceNumber])) continue;
-    if( count($winProbas[$raceNumber]) < 12 ) continue;
-    $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Place' => [" . implode(", ", $selected[$raceNumber]) . "]\n";
+    if(!isset($placeProbas[$raceNumber])) continue;
+    if( count($placeProbas[$raceNumber]) < 12 ) continue;
+    if(isset($oldOdds)){
+        $selectedArray = $oldOdds["Race $raceNumber"]['Place'];
+    }
+    else{
+        $selectedArray = [];
+    }
+    $selectedArray[] = $selected[$raceNumber];
+    $selectedValues = array_unique(array_values($selectedArray));
+    $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Place' => [" . implode(", ", $selectedValues) . "]\n";
     $outtext .= "\t],\n";
 }
 
