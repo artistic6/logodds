@@ -106,14 +106,14 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     if(!isset($placeProbas[$raceNumber])) continue;
     if( count($placeProbas[$raceNumber]) < 12 ) continue;
     if(isset($oldOdds)){
-        $selectedArray = $oldOdds["Race $raceNumber"]['Place'];
+        $selectedArray = $oldOdds["Race $raceNumber"]['Win'];
     }
     else{
         $selectedArray = [];
     }
     $selectedArray[] = $selected[$raceNumber];
     $selectedValues = array_unique(array_values($selectedArray));
-    $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Place' => [" . implode(", ", $selectedValues) . "]\n";
+    $outtext .= "\t'Race $raceNumber' => \n\t[\n\t\t'Win' => [" . implode(", ", $selectedValues) . "]\n";
     $outtext .= "\t],\n";
 }
 
