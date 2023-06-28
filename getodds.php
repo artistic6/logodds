@@ -23,7 +23,7 @@ if (!file_exists($outDir)) {
     mkdir($outDir, 0777, true);
 }
 
-$outFile =$outDir . DIRECTORY_SEPARATOR . "odds.php";
+$outFile =$outDir . DIRECTORY_SEPARATOR . "getodds.php";
 
 $outtext = "<?php\n\n";
 $outtext .= "return [\n";
@@ -38,43 +38,22 @@ for($r = 1; $r <= $totalRaces; $r++){
     $oddsJSON = file_get_contents("https://bet.hkjc.com/racing/getJSON.aspx?type=winplaodds&date=$raceDateFormat&venue=$venue&start=$r&end=$r");
 
     $odds = json_decode($oddsJSON, true);
-    if($odds == NULL) exit("ERROR!!!\n");
-    
+    if($odds == NULL) exit("ERROR GETTING DATA !!!\n");
     $odds = $odds["OUT"];
-   
+
     $pos = strpos($odds, "#PLA");
-    $winOdds = substr($odds, 0, $pos);
-    $plaOdds = substr($odds, $pos, strlen($odds));
+    $odds = substr($odds, 0, $pos);
 
-    $winOdds = explode(";",$winOdds);
-    $plaOdds = explode(";",$plaOdds);
+    $odds = explode(";",$odds);
 
-    $outOdds = [];
-
-    for($k = 1; $k < count($winOdds); $k++) {
-        $lineParts = explode("=", $winOdds[$k]);
+    for($k = 1; $k < count($odds); $k++) {
+        $lineParts = explode("=", $odds[$k]);
         $runner = $lineParts[0];
         $currentOdds = $lineParts[1];
-        if($currentOdds != "SCR" && $currentOdds != "Scratched" && !empty($currentOdds) && is_numeric($currentOdds)){
-            $outOdds[$runner]['win'] = $currentOdds;
+        if($currentOdds !== "SCR"){
+            $outtext .= "\t\t$runner => $currentOdds,\n";
         }
     }
-
-    for($k = 1; $k < count($plaOdds); $k++) {
-        $lineParts = explode("=", $plaOdds[$k]);
-        $runner = $lineParts[0];
-        $currentOdds = $lineParts[1];
-        if(isset($outOdds[$runner]['win']) ){
-            $outOdds[$runner]['place'] = $currentOdds;
-        }
-    }
-
-    foreach($outOdds as $runner => $oddie) {
-        $outtext .= "\t\t$runner => [\n\t\t\t\t'WIN' => " . $oddie['win'] . ",\n";
-        $outtext .= "\t\t\t\t'PLA' => " . $oddie['place'] . "\n";
-        $outtext .= "\t\t\t],\n";
-    }
-
     $outtext .= "\t],\n";
 }
 
