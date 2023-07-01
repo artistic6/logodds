@@ -196,7 +196,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
 
     $SS = array_intersect($_WIN, $qinValues);
     sort($SS);
-    if(!in_my_array($SS, $SS_)) $SS_[] = $SS;
+    if(!empty($SS) && !in_my_array($SS, $SS_)) $SS_[] = $SS;
 
     $iSS = [];
     for($i = 0; $i < count($SS_); $i ++){
