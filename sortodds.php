@@ -88,7 +88,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $tmpArray = $probas[$raceNumber];
     $runners = array_keys($tmpArray);
 
-    if(count($runners) < 11) continue;
+    if(count($runners) < 10) continue;
     
     $racetext .= "\t'$raceNumber' => [\n";
     $racetext .= "\t\t/**\n";
@@ -219,10 +219,6 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $X = array_values(array_unique(array_merge($X1, $X2)));
 
     $iInter = array_diff($iInter, $X);
-    $SA = array_diff($SA, $X);
-    $SB = array_diff($SB, $X);
-    $SS = array_values(array_unique(array_merge($SA, $SB)));
-
     $iInter = array_diff($iInter, [$first1]);
 
     $racetext .= "\t\t'wins' =>  $WINSText ,\n";
@@ -230,7 +226,6 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $racetext .= "\t\t'inters' =>  $INTERSText ,\n";
     $racetext .= "\t\t'Favorite' =>  '" . $first1. "',\n";
     $racetext .= "\t\t'I' =>  '" . implode(", ", $iInter). "',\n";
-    $racetext .= "\t\t'S' =>  '" . implode(", ", $SS). "',\n";
     $racetext .= "\t],\n";
     unset($qin);
     unset($qinValues);
