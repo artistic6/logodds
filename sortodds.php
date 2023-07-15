@@ -188,6 +188,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $someCounter = 0;
     $someLength = count($wins);
     foreach($wins as $winsItem){
+        if(in_array($first1, $winsItem)) $NOPLACE = true;
         $WINSText .= "[" . implode(", ", $winsItem) . "]";
         $someCounter ++;
         if($someCounter < $someLength) $WINSText .= ", ";
@@ -226,11 +227,14 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $racetext .= "\t\t'inters' =>  $INTERSText ,\n";
     $racetext .= "\t\t'Favorite' =>  '" . $first1. "',\n";
     $racetext .= "\t\t'I' =>  '" . implode(", ", $iInter). "',\n";
+    if(isset($NOPLACE)) $racetext .= "\t\t'PLACE' =>  'NO',\n";
+    else $racetext .= "\t\t'PLACE' =>  '" . $first1. "',\n";
     $racetext .= "\t],\n";
     unset($qin);
     unset($qinValues);
     unset($oldWINS);
     unset($oldQPLTrio);
+    unset($NOPLACE);
     $outtext .= $racetext;
 }
 
