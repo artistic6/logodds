@@ -61,4 +61,3 @@ $outtext .= "];\n";
 
 file_put_contents($outFile, $outtext);
 
-

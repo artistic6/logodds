@@ -29,7 +29,7 @@ function in_my_array($needle, $haystack){
 
 if(!isset($argv[1])) die("Race Date Not Entered!!\n");
 
-$step = 1;
+$step = 2;
 $raceDate = trim($argv[1]);
 $currentDir = __DIR__ . DIRECTORY_SEPARATOR . $raceDate;
 
@@ -147,11 +147,12 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     if(isset($oldQPLTrio)) $qplTrios = $oldQPLTrio;
     else $qplTrios = [];
     
-    if(!empty($difference)) {
+    if(!empty($difference) && count($difference) == 2) {
         if(!in_my_array($difference, $wins)) $wins[] = $difference;
-    } 
-
-    if(!in_my_array($intersection, $inters)) $inters[] = $intersection;
+        if(!in_my_array($intersection, $inters)) $inters[] = $intersection;
+        $qplTrio = array_values(array_unique(array_merge($intersection, $difference)));
+        if(!in_my_array($qplTrio, $qplTrios)) $qplTrios[] = $qplTrio;
+    }
 
     $iInter = [];
     for($i = 0; $i < count($inters); $i ++){
@@ -159,11 +160,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
             $iInter = array_values(array_unique(array_merge($iInter, array_intersect($inters[$i], $inters[$j]))));
         }
     }
-
     sort($iInter);
-
-    $qplTrio = array_values(array_unique(array_merge($intersection, $difference)));
-    if(!in_my_array($qplTrio, $qplTrios)) $qplTrios[] = $qplTrio;
 
     $_WIN = [];
     foreach($wins as $winsItem){
@@ -209,8 +206,11 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $INTERSText = "[";
     $someCounter = 0;
     $someLength = count($inters);
-    $firstInters = array_values($inters)[0];
-    $interInters = $firstInters;
+    if(empty($inters)) $interInters = [];
+    else{
+        $firstInters = array_values($inters)[0];
+        $interInters = $firstInters;
+    }
     foreach($inters as $intersItem){
         $allIntersValues = array_values(array_unique(array_merge($allIntersValues, $intersItem)));
         $interInters = array_intersect($interInters, $intersItem);
@@ -226,8 +226,11 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $QPLText = "[";
     $someCounter = 0;
     $someLength = count($qplTrios);
-    $firstQpl = array_values($qplTrios)[0];
-    $interQPL = $firstQpl;
+    if(empty($qplTrios)) $interQPL = [];
+    else{
+        $firstQpl = array_values($qplTrios)[0];
+        $interQPL = $firstQpl;
+    }
     foreach($qplTrios as $qplItem){
         $allQplValues = array_values(array_unique(array_merge($allQplValues, $qplItem)));
         $interQPL = array_intersect($interQPL, $qplItem);
