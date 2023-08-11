@@ -153,35 +153,25 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
 
     if(!in_my_array($intersection, $inters)) $inters[] = $intersection;
 
-    $iInter = [];
-    for($i = 0; $i < count($inters); $i ++){
-        for($j = $i + 1; $j < count($inters); $j ++){
-            $iInter = array_values(array_unique(array_merge($iInter, array_intersect($inters[$i], $inters[$j]))));
-        }
-    }
-
-    sort($iInter);
-
     $qplTrio = array_values(array_unique(array_merge($intersection, $difference)));
     if(!in_my_array($qplTrio, $qplTrios)) $qplTrios[] = $qplTrio;
-
-    $_WIN = [];
-    foreach($wins as $winsItem){
-        $_WIN = array_values(array_unique(array_merge($_WIN, $winsItem)));
-    }
         
     $allWinsValues = [];
+    $qqpls = [];
     $WINSText = "[";
     $someCounter = 0;
     $someLength = count($wins);
     foreach($wins as $winsItem){
+        if(count($winsItem) == 2) {
+            $qqpls[] = $winsItem;
+        }
         $allWinsValues = array_values(array_unique(array_merge($allWinsValues, $winsItem)));
-        if(in_array($first1, $winsItem)) $NOPLACE = true;
         $WINSText .= "[" . implode(", ", $winsItem) . "]";
         $someCounter ++;
         if($someCounter < $someLength) $WINSText .= ", ";
     }
     $WINSText .= "]";
+    $NOPLACE = ( count($qqpls) !== 1 );
 
     //1. Sort allWinsValues by odds
     $winssOdds = [];
@@ -209,18 +199,13 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $INTERSText = "[";
     $someCounter = 0;
     $someLength = count($inters);
-    $firstInters = array_values($inters)[0];
-    $interInters = $firstInters;
     foreach($inters as $intersItem){
         $allIntersValues = array_values(array_unique(array_merge($allIntersValues, $intersItem)));
-        $interInters = array_intersect($interInters, $intersItem);
         $INTERSText .= "[" . implode(", ", $intersItem) . "]";
         $someCounter ++;
         if($someCounter < $someLength) $INTERSText .= ", ";
     }
     $INTERSText .= "]";
-
-    $betValues = array_diff($allWinsValues, $allIntersValues);
 
     $allQplValues = [];
     $QPLText = "[";
@@ -283,20 +268,12 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     }
     arsort($qplValuesOccurences);
     $blackQplValues = array_keys($qplValuesOccurences);
-   
-    $iOdds = [];
-    foreach($iInter as $iIndex){
-        if(isset($allOdds[$raceNumber][$iIndex])) $iOdds[$iIndex] = $allOdds[$raceNumber][$iIndex];
-    }
-    asort($iOdds);
-    $iInter = array_keys($iOdds);
 
     $placeValues = array_diff($allQplValues, $allWinsValues);
 
     $surePlace = array_intersect($placeValues, $blackQplValues, $interQPL);
 
-    //$surePlace must be of the same color of the favorite but mnust be different than the favorite
-
+    //$surePlace must be of the same color of the favorite but must be different than the favorite
     foreach($surePlace as $key => $candidate){
         if($candidate == $first1) unset($surePlace[$key]);
         if(in_array($candidate, $blacks) && in_array($first1, $reds)) unset($surePlace[$key]);
@@ -307,17 +284,13 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $racetext .= "\t\t'qpl/trio' =>  $QPLText ,\n";
     $racetext .= "\t\t'inters' =>  $INTERSText ,\n";
     $racetext .= "\t\t'Favorite' =>  '" . $first1. "',\n";
-    $racetext .= "\t\t'Sure Place'    =>  '" . implode(", ", $surePlace). "',\n";
-    $racetext .= "\t\t'All Wins values'    =>  '" . implode(", ", $allWinsValues). "',\n";
-    $racetext .= "\t\t'Place values'    =>  '" . implode(", ", $placeValues). "',\n";
+    if(!$NOPLACE && !empty($surePlace)){
+        $racetext .= "\t\t'Place'    =>  '" . implode(", ", $surePlace). "',\n";
+        $racetext .= "\t\t'QQPL'      =>  '" . implode(", ", $qqpls[0]). "',\n";
+    }
     $racetext .= "\t\t'Red QPL values'      =>  '" . implode(", ", $redQplValues). "',\n";
     $racetext .= "\t\t'Black QPL values'    =>  '" . implode(", ", $blackQplValues). "',\n";
-    $racetext .= "\t\t'Inter Inters' =>  '" . implode(", ", $interInters). "',\n";
     $racetext .= "\t\t'Inter QPL' =>  '" . implode(", ", $interQPL). "',\n";
-    $racetext .= "\t\t'I' =>  '" . implode(", ", $iInter). "',\n";
-    $racetext .= "\t\t'Bet' =>  '" . implode(", ", $betValues). "',\n";
-    if(isset($NOPLACE)) $racetext .= "\t\t'PLACE' =>  'NO',\n";
-    else $racetext .= "\t\t'PLACE' =>  '" . $first1. "',\n";
     $racetext .= "\t],\n";
     unset($oldWINS);
     unset($oldQPLTrio);

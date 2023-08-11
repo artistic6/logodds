@@ -161,12 +161,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
         }
     }
     sort($iInter);
-
-    $_WIN = [];
-    foreach($wins as $winsItem){
-        $_WIN = array_values(array_unique(array_merge($_WIN, $winsItem)));
-    }
-        
+     
     $allWinsValues = [];
     $WINSText = "[";
     $someCounter = 0;
