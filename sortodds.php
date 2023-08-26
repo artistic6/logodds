@@ -257,7 +257,7 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     }
     asort($qplsOdds);
     $blackQplValues = array_keys($qplsOdds);
-    //2. Sort red qplValues by occurence
+    //2. Sort black qplValues by occurence
     $qplValuesOccurences = [];
     foreach($blackQplValues as $qplValue) {
         $qplValuesOccurences[$qplValue] = 0;
