@@ -10,17 +10,33 @@ $twoFile = $currentDir . DIRECTORY_SEPARATOR . "2.php";
 if(!file_exists($oneFile) || !file_exists($twoFile)){
     exit("No input files!");
 }
-$oneDate = include($oneFile);
-$twoDate = include($twoFile);
+$oneData = include($oneFile);
+$twoData = include($twoFile);
 
 $outFile = $currentDir . DIRECTORY_SEPARATOR . "bets.php";
 
 $outtext = "<?php\n\n";
 $outtext .= "return [\n";
 
-foreach($oneDate as $raceNumber => $oneRaceDate){
+foreach($oneData as $raceNumber => $oneRaceDate){
+    $wins = $oneData[$raceNumber]["wins"];
+    if(!empty($wins)){
+        $favoritePlace = true;
+        foreach($wins as $winsItem){
+            if(count($winsItem) !== 1) $favoritePlace = false;
+        }
+        if($favoritePlace){
+            $racetext = "\t'$raceNumber' => [\n";
+            $racetext .= "\t\t/**\n";
+            $racetext .= "\t\tRace $raceNumber\n";
+            $racetext .= "\t\t*/\n";
+            $racetext .= "\t\t'Place' =>  '" . $oneData[$raceNumber]["Favorite"] . "',\n";
+            $racetext .= "\t],\n";
+            $outtext .= $racetext;
+        }
+    }
     if(isset($oneRaceDate["Place"])){
-        $twoRaceData = $twoDate[$raceNumber];
+        $twoRaceData = $twoData[$raceNumber];
         if(!empty($twoRaceData["Sure Place"])) $placeBet = $twoRaceData["Sure Place"];
         else $placeBet = $oneRaceDate["Place"];
         $qplBet = $oneRaceDate["QQPL"];
