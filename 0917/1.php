@@ -86,7 +86,7 @@ return [
 		'Favorite' =>  '2',
 		'places'    =>  [2, 10],
 		'Red QPL values'      =>  '9, 5, 12, 3, 7',
-		'Black QPL values'    =>  '2, 10, 8, 11, 4',
+		'Black QPL values'    =>  '2, 10, 8, 4, 11',
 		'Inter QPL' =>  '10, 2',
 	],
 ];
