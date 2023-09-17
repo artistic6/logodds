@@ -61,7 +61,7 @@ return [
 		'QQPL'      =>  '2, 5',
 		'places'    =>  [8, 13],
 		'Red QPL values'      =>  '3, 1, 5',
-		'Black QPL values'    =>  '8, 13, 10, 4, 6, 2',
+		'Black QPL values'    =>  '8, 13, 6, 10, 4, 2',
 		'Inter QPL' =>  '8, 13, 3',
 	],
 	'9' => [
