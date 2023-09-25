@@ -22,25 +22,15 @@ $outtext = "<?php\n\n";
 $outtext .= "return [\n";
 
 foreach($oneData as $raceNumber => $oneRaceDate){
-    $wins = $oneData[$raceNumber]["wins"];
-    if(!empty($wins)){
-        $favoritePlace = true;
-        foreach($wins as $winsItem){
-            if(count($winsItem) !== 1) $favoritePlace = false;
-        }
-        if($favoritePlace){
-            $favorite = $oneData[$raceNumber]["Favorite"];
-            if(in_array($favorite, $blacks)){
-                $racetext = "\t'$raceNumber' => [\n";
-                $racetext .= "\t\t/**\n";
-                $racetext .= "\t\tRace $raceNumber\n";
-                $racetext .= "\t\t*/\n";
-                $racetext .= "\t\t'Place(100)' =>  '" . $favorite . "',\n";
-                $racetext .= "\t\t'Win  (10) ' =>  '" . $favorite . "',\n";
-                $racetext .= "\t],\n";
-                $outtext .= $racetext;
-            }
-        }
+    if(isset($oneRaceDate["Sure Place"])){
+        $racetext = "\t'$raceNumber' => [\n";
+        $racetext .= "\t\t/**\n";
+        $racetext .= "\t\tRace $raceNumber\n";
+        $racetext .= "\t\t*/\n";
+        $racetext .= "\t\t'Place(100)' =>  '" . $oneRaceDate["Sure Place"] . "',\n";
+        $racetext .= "\t\t'Win  (10) ' =>  '" . $oneRaceDate["Sure Place"] . "',\n";
+        $racetext .= "\t],\n";
+        $outtext .= $racetext;
     }
     if(isset($oneRaceDate["Place"])){
         $twoRaceData = $twoData[$raceNumber];

@@ -274,23 +274,29 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
 
     $placeValues = array_diff($allQplValues, $allWinsValues);
 
-    $surePlace = array_intersect($placeValues, $blackQplValues, $interQPL);
+    $place = array_intersect($placeValues, $blackQplValues, $interQPL);
 
-    //$surePlace must be of the same color of the favorite but must be different than the favorite
-    foreach($surePlace as $key => $candidate){
-        if($candidate == $first1) unset($surePlace[$key]);
-        if(in_array($candidate, $blacks) && in_array($first1, $reds)) unset($surePlace[$key]);
-        if(in_array($candidate, $reds) && in_array($first1, $blacks)) unset($surePlace[$key]);
+    //$place must be of the same color of the favorite but must be different than the favorite
+    foreach($place as $key => $candidate){
+        if($candidate == $first1) unset($place[$key]);
+        if(in_array($candidate, $blacks) && in_array($first1, $reds)) unset($place[$key]);
+        if(in_array($candidate, $reds) && in_array($first1, $blacks)) unset($place[$key]);
     }
+
+    if(in_array($first1, $blacks) && !in_array($first1, $allWinsValues) && !in_array($first1, $places)) $surePlace = $first1;
+    elseif(in_array($first1, $reds) && in_array($first1, $allWinsValues) && !in_array($first1, $places)) $surePlace = $first1;
     
     $racetext .= "\t\t'wins' =>  $WINSText ,\n";
     $racetext .= "\t\t'qpl/trio' =>  $QPLText ,\n";
     $racetext .= "\t\t'inters' =>  $INTERSText ,\n";
     $racetext .= "\t\t'Favorite' =>  '" . $first1. "',\n";
-    if(!$NOPLACE && !empty($surePlace)){
-        $racetext .= "\t\t'Place'    =>  '" . implode(", ", $surePlace). "',\n";
+    if(isset($surePlace)){
+        $racetext .= "\t\t'Sure Place'    =>  '$surePlace',\n";
+    }
+    if(!$NOPLACE && !empty($place)){
+        $racetext .= "\t\t'Place'    =>  '" . implode(", ", $place). "',\n";
         $racetext .= "\t\t'QQPL'      =>  '" . implode(", ", $qqpls[0]). "',\n";
-        foreach($surePlace as $key => $candidate){
+        foreach($place as $key => $candidate){
             if(!in_array($candidate, $places)) $places[] = $candidate;
         }
     }
@@ -306,6 +312,8 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     unset($oldINTERS);
     unset($NOPLACE);
     unset($historicPlaces);
+    unset($place);
+    unset($surePlace);
     $outtext .= $racetext;
 }
 
