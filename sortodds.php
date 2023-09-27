@@ -283,15 +283,15 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
         if(in_array($candidate, $reds) && in_array($first1, $blacks)) unset($place[$key]);
     }
 
-    if(in_array($first1, $blacks) && !in_array($first1, $allWinsValues) && !in_array($first1, $places)) $surePlace = $first1;
-    elseif(in_array($first1, $reds) && in_array($first1, $allWinsValues) && !in_array($first1, $places)) $surePlace = $first1;
-    
+    $surePlace = array_intersect($interQPL, $blacks);
+    $surePlace = array_diff($surePlace, $allWinsValues);
+
     $racetext .= "\t\t'wins' =>  $WINSText ,\n";
     $racetext .= "\t\t'qpl/trio' =>  $QPLText ,\n";
     $racetext .= "\t\t'inters' =>  $INTERSText ,\n";
     $racetext .= "\t\t'Favorite' =>  '" . $first1. "',\n";
-    if(isset($surePlace)){
-        $racetext .= "\t\t'Sure Place'    =>  '$surePlace',\n";
+    if(!empty($surePlace)){
+        $racetext .= "\t\t'Sure Place'    =>  '" . implode(", ", $surePlace). "',\n";
     }
     if(!$NOPLACE && !empty($place)){
         $racetext .= "\t\t'Place'    =>  '" . implode(", ", $place). "',\n";
