@@ -28,7 +28,6 @@ foreach($oneData as $raceNumber => $oneRaceDate){
         $racetext .= "\t\tRace $raceNumber\n";
         $racetext .= "\t\t*/\n";
         $racetext .= "\t\t'Place(100)' =>  '" . $oneRaceDate["Sure Place"] . "',\n";
-        $racetext .= "\t\t'Win  (10) ' =>  '" . $oneRaceDate["Sure Place"] . "',\n";
         $racetext .= "\t],\n";
         $outtext .= $racetext;
     }
