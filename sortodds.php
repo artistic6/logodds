@@ -290,7 +290,9 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
     $racetext .= "\t\t'qpl/trio' =>  $QPLText ,\n";
     $racetext .= "\t\t'inters' =>  $INTERSText ,\n";
     $racetext .= "\t\t'Favorite' =>  '" . $first1. "',\n";
-    if(!empty($surePlace)){
+    $showPlace = !empty($surePlace) && (!empty($places) || in_array($first1, $surePlace));
+    if($showPlace){
+        if(in_array($first1, $surePlace)) $surePlace = [$first1];
         $racetext .= "\t\t'Sure Place'    =>  '" . implode(", ", $surePlace). "',\n";
     }
     if(!$NOPLACE && !empty($place)){
