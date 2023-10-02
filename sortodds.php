@@ -285,12 +285,13 @@ for ($raceNumber = 1; $raceNumber <= $totalRaces; $raceNumber++) {
 
     $surePlace = array_intersect($interQPL, $blacks);
     $surePlace = array_diff($surePlace, $allWinsValues);
+    $surePlace = array_diff($surePlace, $places);
 
     $racetext .= "\t\t'wins' =>  $WINSText ,\n";
     $racetext .= "\t\t'qpl/trio' =>  $QPLText ,\n";
     $racetext .= "\t\t'inters' =>  $INTERSText ,\n";
     $racetext .= "\t\t'Favorite' =>  '" . $first1. "',\n";
-    $showPlace = !empty($surePlace) && (!(!empty($places) && in_array($first1, $surePlace)));
+    $showPlace = !empty($surePlace);
     if($showPlace){
         if(in_array($first1, $surePlace)) $surePlace = [$first1];
         $racetext .= "\t\t'Sure Place'    =>  '" . implode(", ", $surePlace). "',\n";
