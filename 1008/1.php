@@ -87,7 +87,7 @@ return [
 		'inters' =>  [[5, 2], [8, 9, 2], [5, 1, 8, 9], [5, 7, 8, 9, 2], [1, 8, 9], [1, 8], [1, 5, 8]] ,
 		'Favorite' =>  '1',
 		'Red QPL values'      =>  '5, 9, 1, 7',
-		'Black QPL values'    =>  '2, 8',
+		'Black QPL values'    =>  '8, 2',
 		'Inter QPL' =>  '5, 2, 9, 8',
 	],
 	'10' => [
